@@ -1,9 +1,11 @@
 const http = require("http");
-const fetch = require("node-fetch"); // important for deployment
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 require("dotenv").config();
 
 const port = process.env.PORT || 5001;
 const apiKey = process.env.API_KEY;
+console.log("API KEY:", apiKey);
 
 const fetchForecastByCity = (city_name, res) => {
   fetch(
@@ -29,15 +31,15 @@ let server = http.createServer((req, res) => {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") {
-    res.writeHead(200, {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    });
-    res.end();
-    return;
-  }
+if (req.method === "OPTIONS") {
+  res.writeHead(200, {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  });
+  res.end();
+  return;
+}
 
   if (req.url === "/" && req.method === "POST") {
     let requestBody = "";
