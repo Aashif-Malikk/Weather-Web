@@ -1,6 +1,8 @@
 const http = require("http");
 const fetch = require("node-fetch"); // important for deployment
 require("dotenv").config();
+const cors = require("cors");
+app.use(cors());
 
 const port = process.env.PORT || 5001;
 const apiKey = process.env.API_KEY;
