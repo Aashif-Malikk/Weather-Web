@@ -244,7 +244,7 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ city_name: "London" }),
+        body: JSON.stringify({ city_name: query }),,
       });
       const data = await response.json();
 
